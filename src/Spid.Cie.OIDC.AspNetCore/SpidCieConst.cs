@@ -36,7 +36,7 @@ public sealed class SpidCieConst
     public const string PromptParameter = "prompt";
     public const string RPSelectorKey = "clientId";
     public const string IdPSelectorKey = "oidcidp";
-    public const string DisplayName = "CIE";// The default display name used when registering the SpidHandler.
+    public const string DisplayName = "SpidCieOIDC";// The default display name used when registering the SpidHandler.
     //FIXME: see issue #36 on https://github.com/italia/spid-cie-oidc-aspnetcore/issues
     public const string FetchEndpointPath = "oidc/cie/fetch";
     public const string RedirectUri = "redirect_uri";
@@ -52,7 +52,7 @@ public sealed class SpidCieConst
     public const string TypValue = "entity-statement+jwt";
     public const string ClientAssertion = "client_assertion";
     public const string JsonContentType = "application/json";
-    public const string AuthenticationScheme = "CIE";// The default authentication type used when registering the SpidHandler.
+    public const string AuthenticationScheme = "SpidCieOIDC";// The default authentication type used when registering the SpidHandler.
     public const string CookieName = "SpidCieOIDC.Properties"; // The cookie name
     public const string RPClientRegistrationType = "automatic";
     public const string RemoteSignOutPath = "/signout-spidcie";
