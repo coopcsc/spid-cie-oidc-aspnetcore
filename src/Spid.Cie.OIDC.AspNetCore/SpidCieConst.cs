@@ -28,20 +28,24 @@ public sealed class SpidCieConst
     public const string ClientId = "client_id";
     public const string AcrValues = "acr_values";
     public const string Prompt = "consent login";
-    public const string ListEndpointPath = "list";
+
+    //FIXME: see issue #36 on https://github.com/italia/spid-cie-oidc-aspnetcore/issues
+    public const string ListEndpointPath = "oidc/cie/list";
     public const string RPApplicationType = "web";
     public const string RPSubjectType = "pairwise";
     public const string PromptParameter = "prompt";
     public const string RPSelectorKey = "clientId";
     public const string IdPSelectorKey = "oidcidp";
     public const string DisplayName = "CIE";// The default display name used when registering the SpidHandler.
-    public const string FetchEndpointPath = "fetch";
+    //FIXME: see issue #36 on https://github.com/italia/spid-cie-oidc-aspnetcore/issues
+    public const string FetchEndpointPath = "oidc/cie/fetch";
     public const string RedirectUri = "redirect_uri";
     public const string RequestParameter = "request";
     public const string DummyUrl = "https://dummy.org";
     public const string RefreshToken = "refresh_token";
     public const string OfflineScope = "offline_access";
-    public const string ResolveEndpointPath = "resolve";
+    //FIXME: see issue #36 on https://github.com/italia/spid-cie-oidc-aspnetcore/issues
+    public const string ResolveEndpointPath = "oidc/cie/resolve";
     public const string JWKGeneratorPath = "generatejwk";
     public const string CodeChallenge = "code_challenge";
     public const string CallbackPath = "/signin-oidc-spidcie";
@@ -66,7 +70,8 @@ public sealed class SpidCieConst
     public const string SpidL2 = $"{SpidLevelBaseURI}{nameof(SpidL2)}";
     public const string SpidL3 = $"{SpidLevelBaseURI}{nameof(SpidL3)}";
     public const string UserstatePropertiesKey = "SpidCieOIDC.Userstate";// Constant used to identify userstate inside AuthenticationProperties that have been serialized in the 'wctx' parameter.
-    public const string TrustMarkStatusEndpointPath = "trust_mark_status";
+    //FIXME: see issue #36 on https://github.com/italia/spid-cie-oidc-aspnetcore/issues
+    public const string TrustMarkStatusEndpointPath = "oidc/cie/trust_mark_status";
     public const string SignedOutCallbackPath = "/signout-callback-spidcie";
     public const string ResolveContentType = "application/resolve-response+jwt";
     public const string EntityConfigurationPath = ".well-known/openid-federation";
