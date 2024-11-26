@@ -35,7 +35,7 @@ public sealed class SpidCieConst
     public const string RPSubjectType = "pairwise";
     public const string PromptParameter = "prompt";
     public const string RPSelectorKey = "clientId";
-    public const string IdPSelectorKey = "oidcidp";
+    public const string IdPSelectorKey = "provider";
     public const string DisplayName = "SpidCieOIDC";// The default display name used when registering the SpidHandler.
     //FIXME: see issue #36 on https://github.com/italia/spid-cie-oidc-aspnetcore/issues
     public const string FetchEndpointPath = "oidc/cie/fetch";
@@ -58,7 +58,8 @@ public sealed class SpidCieConst
     public const string RemoteSignOutPath = "/signout-spidcie";
     public const string ResponseTypeParameter = "response_type";
     public const string AuthorizationCode = "authorization_code";
-    public const string OPListPath = "list/?type=openid_provider";
+    //FIXME: see issue #36 on https://github.com/italia/spid-cie-oidc-aspnetcore/issues
+    public const string OPListPath = "oidc/cie/list/?type=openid_provider";
     public const string RevocationEndpoint = "revocation_endpoint";
     public const int EntityConfigurationExpirationInMinutes = 2880;
     public const string BackchannelClientName = "SpidCieBackchannel";
