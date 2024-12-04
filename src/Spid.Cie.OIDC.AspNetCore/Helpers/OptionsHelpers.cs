@@ -18,13 +18,14 @@ public static class OptionsHelpers
     public static SpidCieConfiguration CreateFromConfiguration(IConfiguration configuration, SpidCieConfiguration options)
     {
         var section = configuration.GetSection("SpidCie");
-
-
-        if (section is null)
-            return options;
+        // FIX: necessary to OrchardCore, because options object is taked from DI context and persisted ... we need to not create a new object
         options.RequestRefreshToken = section?.GetValue<bool?>("RequestRefreshToken") ?? false;
         options.SpidOPs = section?.GetSection("SpidOPs")?.Get<List<string>?>() ?? new List<string>();
         options.CieOPs = section?.GetSection("CieOPs")?.Get<List<string>?>() ?? new List<string>();
+
+        if (section is null)
+            return options;
+
         foreach (var relyingPartySection in section
                .GetSection("RelyingParties")?
                .GetChildren()?
@@ -45,12 +46,12 @@ public static class OptionsHelpers
                 RedirectUris = new List<string>() { $"{(relyingPartySection.GetValue<string?>("Id") ?? string.Empty).RemoveTrailingSlash()}{SpidCieConst.CallbackPath}" },
                 LongSessionsEnabled = relyingPartySection.GetValue<bool?>("LongSessionsEnabled") ?? false,
                 AuthorityHints = relyingPartySection.GetSection("AuthorityHints").Get<List<string>?>() ?? new List<string>(),
-                TrustMarks = relyingPartySection.GetSection("trust_marks").GetChildren()
+                TrustMarks = relyingPartySection.GetSection("TrustMarks").GetChildren()
                     .Select(trustMarksSection => new TrustMarkDefinition()
                     {
                         Id = trustMarksSection.GetValue<string>("Id"),
-                        Issuer = trustMarksSection.GetValue<string>("iss"),
-                        TrustMark = trustMarksSection.GetValue<string>("trust_mark")
+                        Issuer = trustMarksSection.GetValue<string>("Issuer"),
+                        TrustMark = trustMarksSection.GetValue<string>("TrustMark")
                     }).ToList(),
                 OpenIdFederationCertificates = relyingPartySection.GetSection("OpenIdFederationCertificates").GetChildren()
                     .Select(GetCertificate)
@@ -81,12 +82,12 @@ public static class OptionsHelpers
                 AuthorityHints = aggregatorSection.GetSection("AuthorityHints").Get<List<string>?>() ?? new List<string>(),
                 OrganizationType = aggregatorSection.GetValue<string?>("OrganizationType") ?? string.Empty,
                 Extension = aggregatorSection.GetValue<string?>("Extension") ?? string.Empty,
-                TrustMarks = aggregatorSection.GetSection("trust_marks").GetChildren()
+                TrustMarks = aggregatorSection.GetSection("TrustMarks").GetChildren()
                     .Select(trustMarksSection => new TrustMarkDefinition()
                     {
-                        Id = trustMarksSection.GetValue<string>("id"),
-                        Issuer = trustMarksSection.GetValue<string>("iss"),
-                        TrustMark = trustMarksSection.GetValue<string>("trust_mark")
+                        Id = trustMarksSection.GetValue<string>("Id"),
+                        Issuer = trustMarksSection.GetValue<string>("Issuer"),
+                        TrustMark = trustMarksSection.GetValue<string>("TrustMark")
                     }).ToList(),
                 //OpenIdCoreCertificates = aggregatorSection.GetSection("OpenIdCoreCertificates").GetChildren()
                 //    .Select(GetCertificate)
@@ -117,12 +118,12 @@ public static class OptionsHelpers
                     PolicyUri = relyingPartySection.GetValue<string?>("PolicyUri") ?? string.Empty,
                     LongSessionsEnabled = relyingPartySection.GetValue<bool?>("LongSessionsEnabled") ?? false,
                     AuthorityHints = new List<string>() { aggregator.Id },
-                    TrustMarks = relyingPartySection.GetSection("trust_marks").GetChildren()
+                    TrustMarks = relyingPartySection.GetSection("TrustMarks").GetChildren()
                         .Select(trustMarksSection => new TrustMarkDefinition()
                         {
-                            Id = trustMarksSection.GetValue<string>("id"),
-                            Issuer = trustMarksSection.GetValue<string>("iss"),
-                            TrustMark = trustMarksSection.GetValue<string>("trust_mark")
+                            Id = trustMarksSection.GetValue<string>("Id"),
+                            Issuer = trustMarksSection.GetValue<string>("Issuer"),
+                            TrustMark = trustMarksSection.GetValue<string>("TrustMark")
                         }).ToList(),
                     OpenIdFederationCertificates = aggregator.OpenIdFederationCertificates,
                     //OpenIdCoreCertificates = aggregator.OpenIdCoreCertificates,
