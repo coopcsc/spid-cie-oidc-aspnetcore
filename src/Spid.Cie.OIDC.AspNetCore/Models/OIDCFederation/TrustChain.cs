@@ -14,7 +14,7 @@ namespace Spid.Cie.OIDC.AspNetCore.Models;
 //}
 
 [ExcludeFromCodeCoverage]
-class TrustChain<T> where T : FederationEntityConfiguration
+public class TrustChain<T> where T : FederationEntityConfiguration
 {
     public DateTimeOffset ExpiresOn { get; set; }
 

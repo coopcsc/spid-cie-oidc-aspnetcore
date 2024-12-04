@@ -13,7 +13,7 @@ using System.Security.Cryptography.X509Certificates;
 
 namespace Spid.Cie.OIDC.AspNetCore.Services;
 
-class CryptoService : ICryptoService
+public class CryptoService : ICryptoService
 {
     static readonly STJSerializer _jsonSerializer = new STJSerializer();
     static readonly UtcDateTimeProvider _utcDateTimeProvider = new UtcDateTimeProvider();

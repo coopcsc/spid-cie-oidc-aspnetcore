@@ -22,7 +22,7 @@ using System.Threading.Tasks;
 
 namespace Spid.Cie.OIDC.AspNetCore.Extensions;
 
-class SpidCieHandler : OpenIdConnectHandler
+public class SpidCieHandler : OpenIdConnectHandler
 {
     readonly SpidCieEvents _events;
     const string NonceProperty = "N";

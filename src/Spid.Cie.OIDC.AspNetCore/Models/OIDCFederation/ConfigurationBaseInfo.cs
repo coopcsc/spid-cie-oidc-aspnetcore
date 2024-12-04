@@ -5,7 +5,7 @@ using System.Text.Json.Serialization;
 namespace Spid.Cie.OIDC.AspNetCore.Models;
 
 [ExcludeFromCodeCoverage]
-class ConfigurationBaseInfo
+public class ConfigurationBaseInfo
 {
     [JsonPropertyName("iss")]
     public string? Issuer { get; set; }

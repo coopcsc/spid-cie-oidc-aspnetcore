@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Spid.Cie.OIDC.AspNetCore.Services;
 
-class RelyingPartiesHandler : IRelyingPartiesHandler
+public class RelyingPartiesHandler : IRelyingPartiesHandler
 {
     private readonly IOptionsMonitor<SpidCieOptions> _options;
     private readonly IRelyingPartiesRetriever _rpRetriever;

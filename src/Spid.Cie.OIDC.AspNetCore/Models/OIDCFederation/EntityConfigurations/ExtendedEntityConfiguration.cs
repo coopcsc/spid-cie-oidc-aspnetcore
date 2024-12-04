@@ -5,7 +5,7 @@ using System.Text.Json.Serialization;
 namespace Spid.Cie.OIDC.AspNetCore.Models;
 
 [ExcludeFromCodeCoverage]
-class ExtendedEntityConfiguration : EntityConfiguration
+public class ExtendedEntityConfiguration : EntityConfiguration
 {
     [JsonPropertyName("trust_marks")]
     public List<TrustMarkDefinition> TrustMarks { get; set; } = new();

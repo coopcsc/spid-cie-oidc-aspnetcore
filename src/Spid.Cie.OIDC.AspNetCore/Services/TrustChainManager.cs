@@ -15,7 +15,7 @@ using System.Threading.Tasks;
 
 namespace Spid.Cie.OIDC.AspNetCore.Services;
 
-class TrustChainManager : ITrustChainManager
+public class TrustChainManager : ITrustChainManager
 {
     readonly HttpClient _httpClient;
     readonly ILogPersister _logPersister;

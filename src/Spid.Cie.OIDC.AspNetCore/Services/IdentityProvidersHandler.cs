@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace Spid.Cie.OIDC.AspNetCore.Services;
 
-class IdentityProvidersHandler : IIdentityProvidersHandler
+public class IdentityProvidersHandler : IIdentityProvidersHandler
 {
     readonly ITrustChainManager _trustChainManager;
     readonly IOptionsMonitor<SpidCieOptions> _options;

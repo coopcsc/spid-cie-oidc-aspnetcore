@@ -7,7 +7,7 @@ using System.Linq;
 
 namespace Spid.Cie.OIDC.AspNetCore.Services;
 
-class MetadataPolicyHandler : IMetadataPolicyHandler
+public class MetadataPolicyHandler : IMetadataPolicyHandler
 {
     private readonly ILogger<MetadataPolicyHandler> _logger;
 

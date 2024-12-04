@@ -5,7 +5,7 @@ using System.Text.Json.Serialization;
 namespace Spid.Cie.OIDC.AspNetCore.Models;
 
 [ExcludeFromCodeCoverage]
-sealed class RP_SpidCieOIDCConfiguration
+public class RP_SpidCieOIDCConfiguration
 {
     [JsonPropertyName("application_type")]
     public string ApplicationType { get; } = SpidCieConst.RPApplicationType;

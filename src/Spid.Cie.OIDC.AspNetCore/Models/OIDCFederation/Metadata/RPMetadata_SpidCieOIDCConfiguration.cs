@@ -4,7 +4,7 @@ using System.Text.Json.Serialization;
 namespace Spid.Cie.OIDC.AspNetCore.Models;
 
 [ExcludeFromCodeCoverage]
-sealed class RPMetadata_SpidCieOIDCConfiguration
+public class RPMetadata_SpidCieOIDCConfiguration
 {
     [JsonPropertyName("openid_relying_party")]
     public RP_SpidCieOIDCConfiguration? OpenIdRelyingParty { get; set; }

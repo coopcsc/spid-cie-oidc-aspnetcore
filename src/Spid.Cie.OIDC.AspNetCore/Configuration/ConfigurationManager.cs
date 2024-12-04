@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace Spid.Cie.OIDC.AspNetCore.Configuration;
 
-class ConfigurationManager : IConfigurationManager<OpenIdConnectConfiguration>
+public class ConfigurationManager : IConfigurationManager<OpenIdConnectConfiguration>
 {
     readonly IIdentityProviderSelector _idpSelector;
 

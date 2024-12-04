@@ -18,7 +18,7 @@ namespace Spid.Cie.OIDC.AspNetCore.Extensions;
 
 public static class ApplicationBuilderExtensions
 {
-    private static ISpidCieOIDCBuilder AddSpidCieOIDCBuilder(this IServiceCollection services)
+    public static ISpidCieOIDCBuilder AddSpidCieOIDCBuilder(this IServiceCollection services)
     {
         return new SpidCieOIDCBuilder(services);
     }

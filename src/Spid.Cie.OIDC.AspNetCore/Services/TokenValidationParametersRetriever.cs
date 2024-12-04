@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace Spid.Cie.OIDC.AspNetCore.Services;
 
-class TokenValidationParametersRetriever : ITokenValidationParametersRetriever
+public class TokenValidationParametersRetriever : ITokenValidationParametersRetriever
 {
     readonly IAggregatorsHandler _aggHandler;
     readonly IRelyingPartySelector _rpSelector;

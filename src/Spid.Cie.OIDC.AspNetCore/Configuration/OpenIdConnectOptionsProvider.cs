@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace Spid.Cie.OIDC.AspNetCore.Configuration;
 
-class OpenIdConnectOptionsProvider : IOptionsMonitor<OpenIdConnectOptions>
+public class OpenIdConnectOptionsProvider : IOptionsMonitor<OpenIdConnectOptions>
 {
     readonly ConcurrentDictionary<string, Lazy<OpenIdConnectOptions>> _cache;
     readonly IOptionsFactory<OpenIdConnectOptions> _optionsFactory;

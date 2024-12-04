@@ -5,7 +5,7 @@ using System.Text.Json.Serialization;
 namespace Spid.Cie.OIDC.AspNetCore.Models;
 
 [ExcludeFromCodeCoverage]
-sealed class RP_SpidCieOIDCFederationEntity
+public class RP_SpidCieOIDCFederationEntity
 {
     [JsonPropertyName("federation_resolve_endpoint")]
     public string? FederationResolveEndpoint { get; set; }

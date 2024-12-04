@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace Spid.Cie.OIDC.AspNetCore.Services.Defaults;
 
-class DefaultAggregatorsRetriever : IAggregatorsRetriever
+public class DefaultAggregatorsRetriever : IAggregatorsRetriever
 {
     public async Task<IEnumerable<Aggregator>> GetAggregators()
     {

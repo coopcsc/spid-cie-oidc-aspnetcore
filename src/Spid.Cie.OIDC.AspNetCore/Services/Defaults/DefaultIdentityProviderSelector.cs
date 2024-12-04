@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace Spid.Cie.OIDC.AspNetCore.Services.Defaults;
 
-class DefaultIdentityProviderSelector : IIdentityProviderSelector
+public class DefaultIdentityProviderSelector : IIdentityProviderSelector
 {
     private readonly IIdentityProvidersHandler _idpHandler;
     private readonly IHttpContextAccessor _httpContextAccessor;

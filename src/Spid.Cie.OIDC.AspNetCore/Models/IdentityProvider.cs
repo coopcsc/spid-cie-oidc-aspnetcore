@@ -17,7 +17,7 @@ public abstract class IdentityProvider
 
     public List<string> SupportedAcrValues { get; set; } = new();
 
-    internal OPEntityConfiguration? EntityConfiguration { get; set; }
+    public OPEntityConfiguration? EntityConfiguration { get; set; }
 
     public string GetAcrValue(SecurityLevels securityLevel)
         => securityLevel == SecurityLevels.L1 && SupportedAcrValues.Contains(SpidCieConst.SpidL1) ? SpidCieConst.SpidL1 :

@@ -3,7 +3,7 @@ using System.Threading.Tasks;
 
 namespace Spid.Cie.OIDC.AspNetCore.Services;
 
-interface ITrustChainManager
+public interface ITrustChainManager
 {
     Task<OPEntityConfiguration?> BuildTrustChain(string url);
 

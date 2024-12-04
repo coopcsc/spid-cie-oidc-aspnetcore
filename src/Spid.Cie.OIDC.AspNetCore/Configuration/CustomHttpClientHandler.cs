@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace Spid.Cie.OIDC.AspNetCore.Configuration;
 
-class CustomHttpClientHandler : HttpClientHandler
+public class CustomHttpClientHandler : HttpClientHandler
 {
     readonly ILogPersister _logPersister;
     readonly ICryptoService _cryptoService;
