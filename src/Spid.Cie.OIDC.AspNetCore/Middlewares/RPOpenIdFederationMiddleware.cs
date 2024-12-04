@@ -104,8 +104,6 @@ class RPOpenIdFederationMiddleware
 
     private RPEntityConfiguration GetEntityConfiguration(RelyingParty rp, ICryptoService cryptoService)
     {
-        var jwks = cryptoService.GetJWKS(rp.OpenIdCoreCertificates);
-
         return new RPEntityConfiguration()
         {
             ExpiresOn = DateTimeOffset.UtcNow.AddMinutes(SpidCieConst.EntityConfigurationExpirationInMinutes),
@@ -114,8 +112,7 @@ class RPOpenIdFederationMiddleware
             Issuer = rp.Id,
             Subject = rp.Id,
             TrustMarks = rp.TrustMarks,
-            //JWKS = cryptoService.GetJWKS(rp.OpenIdFederationCertificates),
-            JWKS = jwks,
+            JWKS = cryptoService.GetJWKS(rp.OpenIdFederationCertificates),
             Metadata = new RPMetadata_SpidCieOIDCConfiguration()
             {
                 OpenIdRelyingParty = new RP_SpidCieOIDCConfiguration()
@@ -125,7 +122,7 @@ class RPOpenIdFederationMiddleware
                     GrantTypes = rp.LongSessionsEnabled
                         ? new() { SpidCieConst.AuthorizationCode, SpidCieConst.RefreshToken }
                         : new() { SpidCieConst.AuthorizationCode },
-                    JWKS = jwks,
+                    JWKS = cryptoService.GetJWKS(rp.OpenIdCoreCertificates),
                     RedirectUris = rp.RedirectUris,
                     ResponseTypes = new() { SpidCieConst.ResponseType }
                 },

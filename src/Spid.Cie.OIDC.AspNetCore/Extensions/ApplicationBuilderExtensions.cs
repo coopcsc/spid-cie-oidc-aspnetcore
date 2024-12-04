@@ -113,6 +113,7 @@ public static class ApplicationBuilderExtensions
     internal const string AuthenticationMiddlewareSetKey = "__AuthenticationMiddlewareSet";
     public static IApplicationBuilder UseSpidCieOIDC(this IApplicationBuilder builder)
     {
+        //FIXME: not understand why but seems OrchardCore doesn't work in the same way... avoid this code to be executed
         //if (builder.Properties.ContainsKey(AuthenticationMiddlewareSetKey)
         //    && (bool)builder.Properties[AuthenticationMiddlewareSetKey])
         //{
