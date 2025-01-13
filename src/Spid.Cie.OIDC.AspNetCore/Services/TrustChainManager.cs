@@ -175,6 +175,14 @@ public class TrustChainManager : ITrustChainManager
 
     public async Task<OPEntityConfiguration?> BuildTrustChain(string url)
     {
+        //TODO: remove me, logging for #497
+        _logger.LogInformation($"url: {url}");
+        _logger.LogInformation($"cache not contains url: {!_idpTrustChainCache.ContainsKey(url)}");
+        if (_idpTrustChainCache.ContainsKey(url))
+        {
+            _logger.LogInformation($"cache for url expires on {_idpTrustChainCache[url].ExpiresOn.ToString("dd/MM/yyy HH:mm::ss")},is expired: {_idpTrustChainCache[url].ExpiresOn < DateTimeOffset.UtcNow}");
+        }
+
         if (!_idpTrustChainCache.ContainsKey(url) || _idpTrustChainCache[url].ExpiresOn < DateTimeOffset.UtcNow)
         {
             if (!await _syncLock.WaitAsync(TimeSpan.FromSeconds(10)))
@@ -198,6 +206,8 @@ public class TrustChainManager : ITrustChainManager
                     }
 
                     DateTimeOffset expiresOn = opConf.ExpiresOn;
+                    //TODO: remove me, logging for #497
+                    _logger.LogInformation($"opConf expiresOn: {expiresOn.ToString("dd/MM/yyyy HH:mm:ss")}");
 
                     bool opValidated = false;
                     foreach (var authorityHint in opConf.AuthorityHints ?? new())
@@ -213,6 +223,8 @@ public class TrustChainManager : ITrustChainManager
 
                         trustChain.Add(taJwt);
 
+                        //TODO: remove me, logging for #497
+                        _logger.LogInformation($"taConf expiresOn: {taConf.ExpiresOn.ToString("dd/MM/yyyy HH:mm:ss")}, is less: {taConf.ExpiresOn < expiresOn}");
                         if (taConf.ExpiresOn < expiresOn)
                             expiresOn = taConf.ExpiresOn;
 
@@ -228,7 +240,8 @@ public class TrustChainManager : ITrustChainManager
                         trustChain.Add(esJwt);
 
                         var esExpiresOn = entityStatement.ExpiresOn;
-
+                        //TODO: remove me, logging for #497
+                        _logger.LogInformation($"entity statemen expiresOn: {esExpiresOn.ToString("dd/MM/yyyy HH:mm:ss")}");
                         // Apply policy
                         //opConf!.Metadata!.OpenIdProvider = _metadataPolicyHandler.ApplyMetadataPolicy(decodedOPJwt!, entityStatement.MetadataPolicy.ToJsonString());
 
@@ -263,22 +276,43 @@ public class TrustChainManager : ITrustChainManager
                         {
                             trustChain.Add(opJwt);
 
+                            //TODO: remove me, logging for #497
+                            _logger.LogInformation($"op.Conf not null : {esExpiresOn.ToString("dd/MM/yyyy HH:mm:ss")}, {expiresOn.ToString("dd/MM/yyyy HH:mm:ss")}");
+
                             expiresOn = esExpiresOn < expiresOn ? esExpiresOn : expiresOn;
+
+                            //TODO: remove me, logging for #497
+                            _logger.LogInformation($"expiresOn : {expiresOn.ToString("dd/MM/yyyy HH:mm:ss")}");
+
                             opValidated = true;
                             trustAnchorUsed = authorityHint;
                             break;
                         }
                     }
+
+
                     if (opValidated && opConf is not null && trustAnchorUsed is not null)
                     {
-                        _idpTrustChainCache.AddOrUpdate(url, new TrustChain<OPEntityConfiguration>()
+                        //TODO: remove me, logging for #497
+                        _logger.LogInformation($"opValidated, expiresOn : {expiresOn.ToString("dd/MM/yyyy HH:mm:ss")}");
+
+                        var updatedExpiredOn = new TrustChain<OPEntityConfiguration>()
                         {
                             ExpiresOn = expiresOn,
                             EntityConfiguration = opConf,
                             //OpConf = opConf,
                             Chain = trustChain,
                             TrustAnchorUsed = trustAnchorUsed
-                        }, (oldValue, newValue) => newValue);
+                        };
+                        var saved = _idpTrustChainCache.AddOrUpdate(url, updatedExpiredOn, (key, oldValue) => {
+                            //TODO: remove me, logging for #497
+                            _logger.LogInformation($"AddOrUpdate, old expiresOn : {oldValue.ExpiresOn.ToString("dd/MM/yyyy HH:mm:ss")}");
+                            _logger.LogInformation($"AddOrUpdate, new expiresOn : {updatedExpiredOn.ExpiresOn.ToString("dd/MM/yyyy HH:mm:ss")}");
+                            return updatedExpiredOn;
+                        });
+
+                        //TODO: remove me, logging for #497
+                        _logger.LogInformation($"opValidated, check saved expiresOn : {saved.ExpiresOn.ToString("dd/MM/yyyy HH:mm:ss")}, check keys: {_idpTrustChainCache.Keys.Where(x => x.Equals(url)).Count()}");
                     }
                 }
                 catch (Exception ex)
@@ -291,6 +325,14 @@ public class TrustChainManager : ITrustChainManager
                     _syncLock.Release();
                 }
             }
+        }
+        //TODO: remove me, logging for #497
+        _logger.LogInformation($"url: {url}");
+        _logger.LogInformation($"cache not contains url: {!_idpTrustChainCache.ContainsKey(url)}");
+        if (_idpTrustChainCache.ContainsKey(url))
+        {
+            _logger.LogInformation($"cache for url expires on {_idpTrustChainCache[url].ExpiresOn.ToString("dd/MM/yyy HH:mm::ss")},is not expired (added expiration grace period): {_idpTrustChainCache[url].ExpiresOn.Add(SpidCieConst.TrustChainExpirationGracePeriod) > DateTimeOffset.UtcNow}");
+            _logger.LogInformation($"entity conf {_idpTrustChainCache[url].EntityConfiguration?.Issuer}");
         }
         return _idpTrustChainCache.ContainsKey(url) && _idpTrustChainCache[url].ExpiresOn.Add(SpidCieConst.TrustChainExpirationGracePeriod) > DateTimeOffset.UtcNow
             ? _idpTrustChainCache[url].EntityConfiguration//_trustChainCache[url].OpConf
