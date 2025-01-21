@@ -11,6 +11,7 @@ using Spid.Cie.OIDC.AspNetCore.Configuration;
 using Spid.Cie.OIDC.AspNetCore.Events;
 using Spid.Cie.OIDC.AspNetCore.Middlewares;
 using Spid.Cie.OIDC.AspNetCore.Services;
+using Spid.Cie.OIDC.AspNetCore.Services.Cache;
 using Spid.Cie.OIDC.AspNetCore.Services.Defaults;
 using System;
 
@@ -70,6 +71,11 @@ public static class ApplicationBuilderExtensions
         internalBuilder.Services.TryAddScoped<IIdentityProvidersHandler, IdentityProvidersHandler>();
         internalBuilder.Services.TryAddScoped<IRelyingPartiesHandler, RelyingPartiesHandler>();
         internalBuilder.Services.TryAddScoped<IAggregatorsHandler, AggregatorsHandler>();
+        // chache and return IdP and RP trust chain
+        internalBuilder.Services.AddMemoryCache();
+        internalBuilder.Services.AddHttpClient<TrustChainCacheWorker>();
+        internalBuilder.Services.AddHostedService<TrustChainCacheWorker>();
+        internalBuilder.Services.TryAddSingleton(typeof(TrustChainCacheSignal<>));
         internalBuilder.Services.TryAddScoped<ITrustChainManager, TrustChainManager>();
         internalBuilder.Services.TryAddScoped<IMetadataPolicyHandler, MetadataPolicyHandler>();
 
