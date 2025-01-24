@@ -1,3 +1,4 @@
+using Microsoft.IdentityModel.Protocols.OpenIdConnect;
 using Spid.Cie.OIDC.AspNetCore.Enums;
 using Spid.Cie.OIDC.AspNetCore.Models;
 using System.Linq;
@@ -19,8 +20,7 @@ public class SpidIdentityProvidersTests
             {
                 Metadata = new OPMetadata_SpidCieOIDCConfiguration()
                 {
-                    //OpenIdProvider = new Microsoft.IdentityModel.Protocols.OpenIdConnect.OpenIdConnectConfiguration()
-                    OpenIdProvider = new OPMetadata_OpenIdConnectConfiguration()
+                    OpenIdProvider = new OpenIdConnectConfiguration()
                 }
             }
         };
@@ -72,8 +72,7 @@ public class SpidIdentityProvidersTests
             {
                 Metadata = new OPMetadata_SpidCieOIDCConfiguration()
                 {
-                    //OpenIdProvider = new Microsoft.IdentityModel.Protocols.OpenIdConnect.OpenIdConnectConfiguration()
-                    OpenIdProvider = new OPMetadata_OpenIdConnectConfiguration()
+                    OpenIdProvider = new OpenIdConnectConfiguration()
                 }
             }
         };
