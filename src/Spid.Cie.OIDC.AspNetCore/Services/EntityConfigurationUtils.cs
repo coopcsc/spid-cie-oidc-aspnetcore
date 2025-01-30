@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace Spid.Cie.OIDC.AspNetCore.Services;
 
-interface IEntityConfigurationUtils
+public interface IEntityConfigurationUtils
 {
   Task<(T? conf, string? decodedJwt, string? jwt)> ValidateAndDecodeEntityConfiguration<T>(string? url)
   where T : FederationEntityConfiguration;
@@ -20,7 +20,7 @@ interface IEntityConfigurationUtils
   where T : FederationEntityConfiguration;
 }
 
-class EntityConfigurationUtils : IEntityConfigurationUtils
+public class EntityConfigurationUtils : IEntityConfigurationUtils
 {
     readonly HttpClient _httpClient;
     readonly ILogPersister _logPersister;
