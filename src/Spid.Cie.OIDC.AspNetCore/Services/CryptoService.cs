@@ -65,13 +65,13 @@ class CryptoService : ICryptoService
                 return new Models.JsonWebKey()
                 {
                     Kty = jsonWebKey.Kty,
-                    Use = jsonWebKey.Use ?? "sig",
+                    Use = jsonWebKey.Use,
                     Kid = jsonWebKey.Kid,
                     //X5t = jsonWebKey.X5t,
                     E = exponent,
                     N = modulus,
                     //X5c = jsonWebKey.X5c.ToList(),
-                    Alg = jsonWebKey.Alg ?? "RS256",
+                    Alg = jsonWebKey.Alg,
                 };
             }).ToList()
         };

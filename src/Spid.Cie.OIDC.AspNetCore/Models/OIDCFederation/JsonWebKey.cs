@@ -10,6 +10,7 @@ class JsonWebKey
     public string? Kty { get; set; }
 
     [JsonPropertyName("use")]
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
     public string? Use { get; set; }
 
     [JsonPropertyName("kid")]
@@ -22,6 +23,7 @@ class JsonWebKey
     public string? N { get; set; }
 
     [JsonPropertyName("alg")]
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
     public string? Alg { get; set; }
 
     //[JsonPropertyName("x5t")]
