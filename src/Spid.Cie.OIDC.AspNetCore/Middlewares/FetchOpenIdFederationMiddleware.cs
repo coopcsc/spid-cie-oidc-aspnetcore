@@ -125,13 +125,16 @@ class FetchOpenIdFederationMiddleware
 
             var emission = DateTimeOffset.Now;
             var expireson = new DateTimeOffset(new DateTime(emission.Year, emission.Month, emission.Day, 0, 0, 0)).AddYears(1);
-            var trustMark = new TrustMarkPayload() {
+            var trustMark = new TrustMarkPayload()
+            {
                 Subject = relyingParty.Id,
                 Issuer = aggregate.Id,
                 OrganizationType = relyingParty.OrganizationType?.ToLower(),
                 Id = id,
                 ExpiresOn = expireson,
                 IssuedAt = emission,
+                IdCode = relyingParty.IdCode,
+                Email = relyingParty.Contacts.Count() == 0? null : string.Join(",", relyingParty.Contacts),
             };
 
 
