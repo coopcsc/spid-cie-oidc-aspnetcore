@@ -36,7 +36,7 @@ public static class OptionsHelpers
             var relyingParty = new RelyingParty
             {
                 Id = relyingPartySection.GetValue<string?>("Id") ?? string.Empty,
-                IdCode = relyingPartySection.GetValue<TrustMarkGovernmentIndex?>("IdCode"),
+                IdCode = relyingPartySection.GetSection("IdCode").Get<TrustMarkGovernmentIndex?>(),
                 Name = relyingPartySection.GetValue<string?>("Name") ?? string.Empty,
                 OrganizationName = relyingPartySection.GetValue<string?>("OrganizationName") ?? string.Empty,
                 OrganizationType = relyingPartySection.GetValue<string?>("OrganizationType") ?? string.Empty,
@@ -109,7 +109,7 @@ public static class OptionsHelpers
                 var relyingParty = new RelyingParty
                 {
                     Id = relyingPartySection.GetValue<string?>("Id") ?? string.Empty,
-                    IdCode = relyingPartySection.GetValue<TrustMarkGovernmentIndex?>("IdCode"),
+                    IdCode = relyingPartySection.GetSection("IdCode").Get<TrustMarkGovernmentIndex?>(),
                     SecurityLevel = securityLevel == 1 ? SecurityLevels.L1 : securityLevel == 3 ? SecurityLevels.L3 : SecurityLevels.L2,
                     Contacts = relyingPartySection.GetSection("Contacts").Get<List<string>?>() ?? new List<string>(),
                     RedirectUris = new List<string>() { $"{(relyingPartySection.GetValue<string?>("Id") ?? string.Empty).RemoveTrailingSlash()}{SpidCieConst.CallbackPath}" },
