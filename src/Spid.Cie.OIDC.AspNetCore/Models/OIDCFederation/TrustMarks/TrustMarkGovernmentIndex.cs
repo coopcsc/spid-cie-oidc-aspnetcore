@@ -1,11 +1,11 @@
-﻿using Newtonsoft.Json;
-using System.Diagnostics.CodeAnalysis;
+﻿using System.Diagnostics.CodeAnalysis;
+using System.Text.Json.Serialization;
 
 namespace Spid.Cie.OIDC.AspNetCore.Models.OIDCFederation.TrustMarks;
 
 [ExcludeFromCodeCoverage]
 public class TrustMarkGovernmentIndex
 {
-    [JsonProperty("ipa_code")]
+    [JsonPropertyName("ipa_code")]
     public string? Code { get; set; }
 }
