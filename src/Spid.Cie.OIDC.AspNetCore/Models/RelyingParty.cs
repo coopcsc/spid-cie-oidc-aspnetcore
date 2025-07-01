@@ -1,4 +1,5 @@
 ﻿using Spid.Cie.OIDC.AspNetCore.Enums;
+using Spid.Cie.OIDC.AspNetCore.Models.OIDCFederation.TrustMarks;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Security.Cryptography.X509Certificates;
@@ -9,6 +10,8 @@ namespace Spid.Cie.OIDC.AspNetCore.Models;
 public sealed class RelyingParty
 {
     public string? Id { get; set; }
+    
+    public TrustMarkGovernmentIndex? IdCode { get; set; }
 
     public string? Name { get; set; }
 
