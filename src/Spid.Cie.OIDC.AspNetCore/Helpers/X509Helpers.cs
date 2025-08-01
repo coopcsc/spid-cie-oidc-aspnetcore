@@ -17,9 +17,17 @@ static class X509Helpers
         Throw<Exception>.If(string.IsNullOrWhiteSpace(certFilePath), ErrorLocalization.CertificatePathNullOrEmpty);
         Throw<Exception>.If(string.IsNullOrWhiteSpace(certPassword), ErrorLocalization.CertificatePasswordNullOrEmpty);
 
+#if NET8_0 || NET7_0 || NET6_0
         return new X509Certificate2(certFilePath,
             certPassword,
             X509KeyStorageFlags.MachineKeySet | X509KeyStorageFlags.PersistKeySet | X509KeyStorageFlags.Exportable);
+#endif
+
+#if NET9_0_OR_GREATER
+        return X509CertificateLoader.LoadPkcs12FromFile(certFilePath,
+            certPassword,
+            X509KeyStorageFlags.EphemeralKeySet);
+#endif
     }
 
     /// <summary>
@@ -35,7 +43,14 @@ static class X509Helpers
 
         var certificateBytes = Convert.FromBase64String(certificateString64);
 
+#if NET8_0 || NET7_0 || NET6_0
         return new X509Certificate2(certificateBytes, certPassword,
             X509KeyStorageFlags.MachineKeySet | X509KeyStorageFlags.PersistKeySet | X509KeyStorageFlags.Exportable);
+#endif
+
+#if NET9_0_OR_GREATER
+        return X509CertificateLoader.LoadPkcs12(certificateBytes, certPassword,
+            X509KeyStorageFlags.EphemeralKeySet);
+#endif
     }
 }
