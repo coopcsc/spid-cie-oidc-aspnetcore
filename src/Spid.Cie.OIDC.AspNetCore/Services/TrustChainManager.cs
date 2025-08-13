@@ -42,11 +42,12 @@ public class TrustChainManager : ITrustChainManager
 
     public TrustChain<T>? GetResolvedTrustChain<T>(string sub, string anchor) where T : EntityConfiguration
     {
+        //TODO: changes from original source code, add SA to usable trust anchors
         return typeof(T).Equals(typeof(OPEntityConfiguration)) && _idpTrustChainCache.ContainsKey(sub) &&
-            _idpTrustChainCache[sub].TrustAnchorUsed.Equals(anchor, StringComparison.OrdinalIgnoreCase) && _idpTrustChainCache[sub].ExpiresOn >= DateTimeOffset.UtcNow ?
+            _idpTrustChainCache[sub].TrustAnchorUsed.Any(a => a.EnsureTrailingSlash().Equals(anchor.EnsureTrailingSlash(), StringComparison.InvariantCultureIgnoreCase)) && _idpTrustChainCache[sub].ExpiresOn >= DateTimeOffset.UtcNow ?
             _idpTrustChainCache[sub] as TrustChain<T> :
             typeof(T).Equals(typeof(RPEntityConfiguration)) && _rpTrustChainCache.ContainsKey(sub) &&
-            _rpTrustChainCache[sub].TrustAnchorUsed.Equals(anchor, StringComparison.OrdinalIgnoreCase) && _rpTrustChainCache[sub].ExpiresOn >= DateTimeOffset.UtcNow ?
+            _rpTrustChainCache[sub].TrustAnchorUsed.Any(a => a.EnsureTrailingSlash().Equals(anchor.EnsureTrailingSlash(), StringComparison.InvariantCultureIgnoreCase)) && _rpTrustChainCache[sub].ExpiresOn >= DateTimeOffset.UtcNow ?
             _rpTrustChainCache[sub] as TrustChain<T> : default;
     }
 
@@ -63,7 +64,8 @@ public class TrustChainManager : ITrustChainManager
             if (!_rpTrustChainCache.ContainsKey(url) || _rpTrustChainCache[url].ExpiresOn < DateTimeOffset.UtcNow)
             {
                 List<string> trustChain = new();
-                string? trustAnchorUsed = default;
+                //TODO: changes from original source code, add SA to usable trust anchors
+                List<string> trustAnchorUsed = new();
 
                 try
                 {
@@ -107,6 +109,8 @@ public class TrustChainManager : ITrustChainManager
                         }
 
                         trustChain.Add(esRPJwt);
+                        //TODO: changes from original source code, add SA to usable trust anchors
+                        trustAnchorUsed.Add(saHint);
 
                         if (rpEntityStatement.ExpiresOn < expiresOn)
                             expiresOn = rpEntityStatement.ExpiresOn;
@@ -143,12 +147,14 @@ public class TrustChainManager : ITrustChainManager
                                 expiresOn = saEntityStatement.ExpiresOn;
 
                             rpValidated = true;
-                            trustAnchorUsed = taHint;
+                            //TODO: changes from original source code, add SA to usable trust anchors
+                            trustAnchorUsed.Add(taHint);
                             break;
                         }
                     }
 
-                    if (rpValidated && rpConf is not null && trustAnchorUsed is not null)
+                    //TODO: changes from original source code, add SA to usable trust anchors
+                    if (rpValidated && rpConf is not null && trustAnchorUsed.Count > 0)
                     {
                         var updatedExpiredOn = new TrustChain<RPEntityConfiguration>()
                         {
@@ -193,7 +199,8 @@ public class TrustChainManager : ITrustChainManager
                 try
                 {
                     List<string> trustChain = new();
-                    string? trustAnchorUsed = default;
+                    //TODO: changes from original source code, add SA to usable trust anchors
+                    List<string> trustAnchorUsed = new();
 
                     (OPEntityConfiguration? opConf, string? decodedOPJwt, string? opJwt) = await _ecutils.ValidateAndDecodeEntityConfiguration<OPEntityConfiguration>(url);
                     if (opConf is null || opConf.Metadata is null || decodedOPJwt is null || opJwt is null || opConf.ExpiresOn < DateTime.UtcNow)
@@ -274,11 +281,14 @@ public class TrustChainManager : ITrustChainManager
 
                             expiresOn = esExpiresOn < expiresOn ? esExpiresOn : expiresOn;
                             opValidated = true;
-                            trustAnchorUsed = authorityHint;
+                            //TODO: changes from original source code, add SA to usable trust anchors
+                            trustAnchorUsed.Add(authorityHint);
                             break;
                         }
                     }
-                    if (opValidated && opConf is not null && trustAnchorUsed is not null)
+
+                    //TODO: changes from original source code, add SA to usable trust anchors
+                    if (opValidated && opConf is not null && trustAnchorUsed.Count > 0)
                     {
                         var updatedExpiredOn = new TrustChain<OPEntityConfiguration>()
                         {
