@@ -13,8 +13,6 @@ public sealed class RelyingParty
     
     public TrustMarkGovernmentIndex? IdCode { get; set; }
 
-    public TrustMarkGovernmentIndex? IdCode { get; set; }
-
     public string? Name { get; set; }
 
     public string? LogoUri { get; set; }
