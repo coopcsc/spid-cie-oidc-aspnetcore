@@ -10,6 +10,8 @@ namespace Spid.Cie.OIDC.AspNetCore.Models;
 public sealed class RelyingParty
 {
     public string? Id { get; set; }
+    
+    public TrustMarkGovernmentIndex? IdCode { get; set; }
 
     public TrustMarkGovernmentIndex? IdCode { get; set; }
 

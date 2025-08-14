@@ -144,7 +144,7 @@ class FetchOpenIdFederationMiddleware
                 Issuer = aggregate.Id,
                 TrustMark = cryptoService.CreateJWT(certificate, trustMark)
             };
-            
+            relyingParty.TrustMarks.Add(trustMarkDef);
             
             var resp = new EntityStatement()
             {
@@ -154,7 +154,7 @@ class FetchOpenIdFederationMiddleware
                 Subject = sub,
                 JWKS = cryptoService.GetJWKS(new List<X509Certificate2>() { certificate }),
                 MetadataPolicy = aggregate.MetadataPolicy,
-                TrustMarks = new List<TrustMarkDefinition>(){ trustMarkDef },
+                TrustMarks = relyingParty.TrustMarks,
                 AuthorityHints = relyingParty.AuthorityHints,
                 OpenIdRelyingParty = new SA_SpidCieOIDCConfiguration
                 {
