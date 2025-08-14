@@ -121,8 +121,9 @@ class FetchOpenIdFederationMiddleware
                 return;
             }
 
+            // generate a new trust mark valid
+            // ATTENTION!: expired trust mark should be manually removed from appsettings.json of SA and RP and the new trust mark should be added manually to appsettings.json of SA and RP
             var id = $"{aggrTrustMarkId.Substring(0,aggrTrustMarkId.IndexOfOccurence("/",3))}/openid_relying_party/{relyingParty.OrganizationType?.ToLower()}";
-
             var emission = DateTimeOffset.Now;
             var expireson = new DateTimeOffset(new DateTime(emission.Year, emission.Month, emission.Day, 0, 0, 0)).AddYears(1);
             var trustMark = new TrustMarkPayload()
@@ -212,26 +213,35 @@ class FetchOpenIdFederationMiddleware
     private bool RPHaveValidTrustMark(ICryptoService cryptoService, RelyingParty rp, Aggregator aggregate, out TrustMarkDefinition trustmark) 
     {
         trustmark = new TrustMarkDefinition();
+        var res = false;
 
         if (rp.TrustMarks is null || !rp.TrustMarks.Any())
         {
-            return false;
+            return res;
         }
 
-        trustmark = rp.TrustMarks.Where(x => x.Issuer == aggregate.Id).FirstOrDefault() ?? new TrustMarkDefinition();
+        var trustmarks = rp.TrustMarks.Where(x => x.Issuer == aggregate.Id);
 
-        if (string.IsNullOrEmpty(trustmark.TrustMark))
+        foreach (var tm in trustmarks)
         {
-            return false;
+            if (string.IsNullOrEmpty(trustmark.TrustMark))
+            {
+                continue;
+            }
+
+            var tmp = JsonSerializer.Deserialize<TrustMarkPayload>(cryptoService.DecodeJWT(trustmark.TrustMark));
+
+            // return new trust mark before it expire, add 5 days to invalidate actual RP trust mark and generate new ones
+            // the new trust mark and the old ones result in the fetch response 
+            if (tmp is null || tmp is not null && tmp.ExpiresOn.AddDays(5) <= DateTimeOffset.Now)
+            {
+                continue;
+            }
+
+            trustmark = tm;
+            res = true;
         }
 
-        var tmp = JsonSerializer.Deserialize<TrustMarkPayload>(cryptoService.DecodeJWT(trustmark.TrustMark));
-
-        if (tmp is null || tmp is not null && tmp.ExpiresOn <= DateTimeOffset.Now)
-        {
-            return false;
-        }
-
-        return true;
+        return res;
     }
 }
