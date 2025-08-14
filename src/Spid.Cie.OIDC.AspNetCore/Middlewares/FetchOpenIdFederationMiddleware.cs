@@ -224,12 +224,12 @@ class FetchOpenIdFederationMiddleware
 
         foreach (var tm in trustmarks)
         {
-            if (string.IsNullOrEmpty(trustmark.TrustMark))
+            if (string.IsNullOrEmpty(tm.TrustMark))
             {
                 continue;
             }
 
-            var tmp = JsonSerializer.Deserialize<TrustMarkPayload>(cryptoService.DecodeJWT(trustmark.TrustMark));
+            var tmp = JsonSerializer.Deserialize<TrustMarkPayload>(cryptoService.DecodeJWT(tm.TrustMark));
 
             // return new trust mark before it expire, add 5 days to invalidate actual RP trust mark and generate new ones
             // the new trust mark and the old ones result in the fetch response 
