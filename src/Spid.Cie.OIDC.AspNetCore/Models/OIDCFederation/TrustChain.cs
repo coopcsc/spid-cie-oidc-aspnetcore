@@ -20,8 +20,5 @@ public class TrustChain<T> where T : FederationEntityConfiguration
 
     public T? EntityConfiguration { get; set; }
 
-    public List<string> Chain { get; set; } = new();
-
-    //TODO: changes from original source code, add SA to usable trust anchors
-    public List<string> TrustAnchorUsed { get; set; } = new();
+    public Dictionary<string, List<string>> Chain { get; set; } = new();
 }

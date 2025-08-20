@@ -70,7 +70,7 @@ class ResolveOpenIdFederationMiddleware
                     IssuedAt = DateTimeOffset.UtcNow,
                     Issuer = uri,
                     //Metadata = trustChain.OpConf.Metadata,
-                    Metadata = new OPResolveMetadata_SpidCieOIDCConfiguration() { 
+                    Metadata = new OPResolveMetadata_SpidCieOIDCConfiguration() {
                         OpenIdProvider = trustChain?.EntityConfiguration?.Metadata?.OpenIdProvider
                     },
                     Subject = sub,
@@ -80,7 +80,7 @@ class ResolveOpenIdFederationMiddleware
                     TrustMarks = trustChain.EntityConfiguration.TrustMarks?
                         .Where(t => JsonSerializer.Deserialize<OPEntityConfiguration>(cryptoService.DecodeJWT(t.TrustMark)).ExpiresOn >= DateTimeOffset.UtcNow)
                         .ToList() ?? new List<TrustMarkDefinition>(),
-                    TrustChain = trustChain.Chain
+                    TrustChain = trustChain.Chain[anchor]
                 };
 
                 string token = cryptoService.CreateJWT(certificate, response);
@@ -110,7 +110,7 @@ class ResolveOpenIdFederationMiddleware
                         Issuer = uri,
                         Metadata = rpTrustChain.EntityConfiguration?.Metadata ?? new(),
                         Subject = sub,
-                        TrustChain = rpTrustChain.Chain,
+                        TrustChain = rpTrustChain.Chain[anchor],
                         TrustMarks = rpTrustChain.EntityConfiguration?.TrustMarks?
                                         .Where(t => JsonSerializer.Deserialize<RPEntityConfiguration>(cryptoService.DecodeJWT(t.TrustMark))?.ExpiresOn >= DateTimeOffset.UtcNow)
                                         .ToList() ?? new()
