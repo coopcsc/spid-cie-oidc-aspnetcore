@@ -58,7 +58,7 @@ class ResolveOpenIdFederationMiddleware
         var certificate = rps.FirstOrDefault(r => uri.Equals(r.Id.EnsureTrailingSlash(), StringComparison.OrdinalIgnoreCase))?.OpenIdFederationCertificates?.FirstOrDefault()
             ?? aggregator?.OpenIdFederationCertificates?.FirstOrDefault();
 
-        if (certificate is not null)
+        if (certificate != null)
         {
             var trustChain = trustChainManager.GetResolvedTrustChain<OPEntityConfiguration>(sub, anchor);
 
