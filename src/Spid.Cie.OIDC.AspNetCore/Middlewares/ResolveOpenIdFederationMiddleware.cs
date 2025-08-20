@@ -91,7 +91,7 @@ class ResolveOpenIdFederationMiddleware
 
                 return;
             }
-            else if ((aggregator.RelyingParties.Union(rps)).Any(rp => rp.Id.EnsureTrailingSlash().Equals(sub.EnsureTrailingSlash(), StringComparison.InvariantCultureIgnoreCase)))
+            else if (aggregator != null && (aggregator.RelyingParties.Union(rps)).Any(rp => rp.Id.EnsureTrailingSlash().Equals(sub.EnsureTrailingSlash(), StringComparison.InvariantCultureIgnoreCase)))
             {
                 var rpTrustChain = trustChainManager.GetResolvedTrustChain<RPEntityConfiguration>(sub, anchor);
 
