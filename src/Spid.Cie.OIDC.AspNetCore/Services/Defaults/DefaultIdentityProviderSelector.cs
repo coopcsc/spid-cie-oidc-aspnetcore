@@ -23,7 +23,7 @@ class DefaultIdentityProviderSelector : IIdentityProviderSelector
             ?? (string?)_httpContextAccessor.HttpContext!.Items[SpidCieConst.IdPSelectorKey];
 
         if (!string.IsNullOrWhiteSpace(provider))
-            return identityProviders.FirstOrDefault(idp => idp.Uri.Equals(provider, System.StringComparison.InvariantCultureIgnoreCase));
+            return identityProviders.FirstOrDefault(idp => idp.Uri?.Equals(provider, System.StringComparison.InvariantCultureIgnoreCase) ?? false);
 
         return default;
     }
