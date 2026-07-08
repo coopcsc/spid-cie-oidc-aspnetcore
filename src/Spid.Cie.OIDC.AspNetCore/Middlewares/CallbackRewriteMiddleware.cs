@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Primitives;
 using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace Spid.Cie.OIDC.AspNetCore.Middlewares;
@@ -30,7 +31,7 @@ class CallbackRewriteMiddleware
         if (context.Request.Path.Value!.EndsWith(tail, StringComparison.OrdinalIgnoreCase)
                 && !context.Request.Path.Value!.Equals(tail, StringComparison.OrdinalIgnoreCase))
         {
-            context.Request.Headers.Add("X-Replaced-Path", new StringValues(context.Request.Path));
+            context.Request.Headers.TryAdd("X-Replaced-Path", new StringValues(context.Request.Path));
             context.Request.Path = tail;
         }
     }
